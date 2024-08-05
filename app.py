@@ -59,12 +59,11 @@ def fetch_job_data(search_key='', location=''):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    search_key = ''
-    location = ''
+    job_data = []
     if request.method == 'POST':
         search_key = request.form.get('search_key')
         location = request.form.get('location')
-    job_data = fetch_job_data(search_key, location)
+        job_data = fetch_job_data(search_key, location)
     return render_template('index.html', jobs=job_data)
 
 if __name__ == '__main__':
