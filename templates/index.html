@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Job Search</h1>
+    <form method="post" action="/">
+        <label for="search_key">Job Position:</label>
+        <input type="text" id="search_key" name="search_key" required><br><br>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required><br><br>
+        <button type="submit">Search</button>
+    </form>
+    <h2>Job Listings</h2>
+    {% if jobs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Company Name</th>
+                    <th>Location</th>
+                    <th>Experience Min</th>
+                    <th>Experience Max</th>
+                    <th>Key Skills</th>
+                    <th>Published On</th>
+                    <th>Expiry Date</th>
+                    <th>Views</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.Title }}</td>
+                        <td>{{ job['Company Name'] }}</td>
+                        <td>{{ job.Location }}</td>
+                        <td>{{ job['Experience Min'] }}</td>
+                        <td>{{ job['Experience Max'] }}</td>
+                        <td>{{ job['Key Skills'] }}</td>
+                        <td>{{ job['Published On'] }}</td>
+                        <td>{{ job['Expiry Date'] }}</td>
+                        <td>{{ job.Views }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No job listings found.</p>
+    {% endif %}
+</body>
+</html>
