@@ -1,7 +1,38 @@
 from flask import Flask, render_template, request
 import requests
+import mysql.connector
 
 app = Flask(__name__)
+
+# Function to establish connection to the MySQL database
+def connect_to_db():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="job_database"
+    )
+
+# Function to insert job data into MySQL
+def insert_job_data_to_db(job_data):
+    conn = connect_to_db()
+    cursor = conn.cursor()
+
+    for job in job_data:
+        sql = """
+            INSERT INTO jobs (title, company_name, location, exp_min, exp_max, key_skills, publish_on, job_expiry, views)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        values = (
+            job['Title'], job['Company Name'], job['Location'], job['Experience Min'],
+            job['Experience Max'], job['Key Skills'], job['Published On'],
+            job['Expiry Date'], job['Views']
+        )
+        cursor.execute(sql, values)
+
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 def fetch_job_data(search_key='', location=''):
     headers = {
@@ -55,6 +86,9 @@ def fetch_job_data(search_key='', location=''):
         }
         job_list.append(job_details)
 
+    # Insert job data into MySQL
+    insert_job_data_to_db(job_list)
+
     return job_list
 
 @app.route('/', methods=['GET', 'POST'])
@@ -68,5 +102,3 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-#this is practices
