@@ -3,7 +3,7 @@ import requests
 import mysql.connector
 
 app = Flask(__name__)
-
+application = app
 # Function to establish connection to the MySQL database
 def connect_to_db():
     return mysql.connector.connect(
